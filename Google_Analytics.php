@@ -86,7 +86,9 @@ $key = 'newcongress-tw-be61ca6250aa.p12';
 
 $analytics = new Google_Analytics($applicationName, $account, $key);
 
-$analytics->setProfileId('New Congress');
+$accountId = $analytics->getAccountId('New Congress');
+$webpropertyId = $analytics->getWebpropertieId($accountId, 'New Congress');
+$profileId = $analytics->getProfileId($accountId, $webpropertyId);
 // $analytics->setProfileId('逐風者');
-
-var_dump($analytics->getResults());
+var_dump($profileId);
+// var_dump($analytics->getResults());

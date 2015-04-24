@@ -33,19 +33,27 @@ class Google_Analytics {
         return $this->analytics->management_accounts->listManagementAccounts();
     }
 
-    public function getProfileId($name = '') {
-        $accounts = $this->listAccounts()->getItems();
-
-        $accountId;
-        foreach ($accounts as $item) {
+    public function getWhoId($instance, $name) {
+        foreach ($instance as $item) {
             if($item->getName() === $name) {
-                $accountId = $item->getId();
-                break;
+                return $accountId = $item->getId();
+                
             }
         }
 
-        $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($accountId);
+        return null;
+    }
 
+    public function getProfileId($name = '') {
+        $accounts = $this->listAccounts()->getItems();
+        $accountId = $this->getWhoId($accounts, $name);
+
+        $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($accountId);
+        $webpropertyId = $this->getWhoId($webproperties, $name);
+
+        $profiles = $this->analytics->management_profiles->listManagementProfiles($accountId, $webpropertyId);
+
+        return $profiles[0]->getId();
 
     }
 
@@ -69,9 +77,7 @@ $key = 'newcongress-tw-be61ca6250aa.p12';
 
 $analytics = new Google_Analytics($applicationName, $account, $key);
 
-// $analytics->setProfileId('New Congress');
+$analytics->setProfileId('New Congress');
 // $analytics->setProfileId('逐風者');
 
-// var_dump($analytics->getResults());
-
-var_dump($analytics->getProfileId('New Congress'));
+var_dump($analytics->getResults());

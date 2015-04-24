@@ -80,12 +80,14 @@ class Google_Analytics {
         return $this;
     }
 
-    public function getResults() {
+    public function getResults($start_date, $end_date, $metrics, $optParams = []) {
+
         return $this->analytics->data_ga->get(
             'ga:' . $this->profileId,
-            '2015-03-03',
-            '2015-04-03',
-            'ga:sessions'
+            $start_date,
+            $end_date,
+            $metrics,
+            $optParams
         );
     }
 }
@@ -98,4 +100,4 @@ $analytics = new Google_Analytics($applicationName, $account, $key);
 
 $analytics->setAccountId('逐風者')->setWebpropertieId('逐風者')->setProfileId();
 
-var_dump($analytics->getResults());
+var_dump($analytics->getResults('2015-01-01', '2015-04-24', 'ga:pageviews', ['dimensions'=>'ga:pagePath,ga:month', 'sort'=>'-ga:pagePath']));

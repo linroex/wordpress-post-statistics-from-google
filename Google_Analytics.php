@@ -91,24 +91,24 @@ class Google_Analytics {
     }
 }
 
-$applicationName = 'newcongress';
-$account = '433729975312-ar2hp401av11nsgadevcqk8fhuodn8uh@developer.gserviceaccount.com';
-$key = 'newcongress-tw-be61ca6250aa.p12';
+// $applicationName = 'newcongress';
+// $account = '433729975312-ar2hp401av11nsgadevcqk8fhuodn8uh@developer.gserviceaccount.com';
+// $key = 'newcongress-tw-be61ca6250aa.p12';
 
-$analytics = new Google_Analytics($applicationName, $account, $key);
+// $analytics = new Google_Analytics($applicationName, $account, $key);
 
-$analytics->setAccountId('逐風者')->setWebpropertieId('逐風者')->setProfileId();
+// $analytics->setAccountId('逐風者')->setWebpropertieId('逐風者')->setProfileId();
 
-$data = $analytics->getResults(
-            '2015-03-22', 
-            '2015-04-24', 
-            'ga:pageviews', [
-                'dimensions'=>'ga:pagePath,ga:date', 
-                'sort'=>'-ga:pageviews'
-            ]
-        );
+// $data = $analytics->getResults(
+//             '2015-03-22', 
+//             '2015-04-24', 
+//             'ga:pageviews', [
+//                 'dimensions'=>'ga:pagePath,ga:date', 
+//                 'sort'=>'-ga:pageviews'
+//             ]
+//         );
 
-foreach($data->getRows() as $row){
-    echo $row[0] . "\t" . $row[1] . "\t" . $row[2] . "\n";
-}
+// foreach($data->getRows() as $row){
+//     echo $row[0] . "\t" . $row[1] . "\t" . $row[2] . "\n";
+// }
 

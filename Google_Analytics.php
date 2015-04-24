@@ -44,21 +44,30 @@ class Google_Analytics {
         return null;
     }
 
-    public function getProfileId($name = '') {
+    public function getAccountId($name) {
         $accounts = $this->listAccounts()->getItems();
         $accountId = $this->getWhoId($accounts, $name);
 
+        return $accountId;
+    }
+
+    public function getWebpropertieId($accountId, $name) {
         $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($accountId);
         $webpropertyId = $this->getWhoId($webproperties, $name);
 
+        return $webpropertyId;
+    }
+
+    public function getProfileId($accountId, $webpropertyId, $index = 0) {
         $profiles = $this->analytics->management_profiles->listManagementProfiles($accountId, $webpropertyId);
 
-        return $profiles[0]->getId();
+        return $profiles[$index]->getId();
 
     }
 
     public function setProfileId($name = '') {
         $this->profileId = $this->getProfileId($name);
+        return $this;
     }
 
     public function getResults() {

@@ -81,7 +81,6 @@ class Google_Analytics {
     }
 
     public function getResults($start_date, $end_date, $metrics, $optParams = []) {
-
         return $this->analytics->data_ga->get(
             'ga:' . $this->profileId,
             $start_date,
@@ -100,4 +99,16 @@ $analytics = new Google_Analytics($applicationName, $account, $key);
 
 $analytics->setAccountId('逐風者')->setWebpropertieId('逐風者')->setProfileId();
 
-var_dump($analytics->getResults('2015-01-01', '2015-04-24', 'ga:pageviews', ['dimensions'=>'ga:pagePath,ga:month', 'sort'=>'-ga:pagePath']));
+$data = $analytics->getResults(
+            '2015-03-22', 
+            '2015-04-24', 
+            'ga:pageviews', [
+                'dimensions'=>'ga:pagePath,ga:date', 
+                'sort'=>'-ga:pageviews'
+            ]
+        );
+
+foreach($data->getRows() as $row){
+    echo $row[0] . "\t" . $row[1] . "\t" . $row[2] . "\n";
+}
+

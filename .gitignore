@@ -13,3 +13,5 @@ wp-content/uploads/
 wp-content/wp-cache-config.php
 composer.lock
 vendor
+*.p12
+gulpfile.js

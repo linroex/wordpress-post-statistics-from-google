@@ -3,9 +3,6 @@
     <h1>熱門文章</h1>
     @foreach($posts as $post)
         <?php
-            if($post[0] == '0'){
-                continue;
-            }
             $data = get_post($post[0]);
         ?>
         <div class="feature-post">

@@ -9,12 +9,12 @@
  * License: MIT
  */
 
-
 session_start();
 
 include(__DIR__ . '/vendor/autoload.php');
 include(__DIR__ . '/Google_Analytics.php');
 include(__DIR__ . '/HotPostsWidget.php');
+include(__DIR__ . '/cron.php');
 
 function install() {
     global $wpdb;
@@ -37,7 +37,7 @@ function install() {
 
 }
 
-function getData() {
+function getData($start_date, $end_date) {
     $applicationName = 'newcongress';
     $account = '433729975312-ar2hp401av11nsgadevcqk8fhuodn8uh@developer.gserviceaccount.com';
     $key = __DIR__ . '/newcongress-tw-be61ca6250aa.p12';
@@ -47,8 +47,8 @@ function getData() {
     $analytics->setAccountId('New Congress')->setWebpropertieId('New Congress')->setProfileId(1);
 
     $data = $analytics->getResults(
-                '2015-04-24', 
-                '2015-04-25', 
+                $start_date, 
+                $end_date, 
                 'ga:pageviews', [
                     'dimensions'=>'ga:pagePath,ga:date', 
                     'sort'=>'-ga:pageviews'
@@ -58,12 +58,15 @@ function getData() {
     return $data->getRows();
 }
 
-function install_data() {
+function installData() {
     global $wpdb;
 
     $table_name = $wpdb->prefix . "statistics"; 
 
-    foreach (getData() as $row) {
+    foreach (getData('2015-04-24', '2015-04-25') as $row) {
+        if(url_to_postid($row[0]) == '0'){
+            continue;
+        }
         $data = [
             'post_id'=>url_to_postid($row[0]),
             'date'=>$row[1],
@@ -83,5 +86,11 @@ function uninstall() {
 }
 
 register_activation_hook(__FILE__, 'install');
-register_activation_hook(__FILE__, 'install_data');
+register_activation_hook(__FILE__, 'installData');
+register_activation_hook(__FILE__, function(){
+    wp_schedule_event(current_time('timestamp'), 'hourly', 'hourly_load_google_analytics');
+});
 register_deactivation_hook(__FILE__, 'uninstall');
+register_deactivation_hook(__FILE__, function(){
+    wp_clear_scheduled_hook('hourly_load_google_analytics');
+});

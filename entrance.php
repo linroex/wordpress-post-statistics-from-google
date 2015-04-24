@@ -17,7 +17,7 @@ function install() {
     $charset = $wpdb->get_charset_collate();
 
     $sql = "
-        CTEATE TABLE $table_name (
+        CREATE TABLE $table_name (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             date DATE NOT NULL,
             post_id bigint(20) NOT NULL,
@@ -28,6 +28,15 @@ function install() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
 
-
 }
 
+function uninstall() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . "statistics"; 
+
+    $wpdb->query("DROP TABLE IF EXISTS $table_name");
+}
+
+register_activation_hook(__FILE__, 'install');
+register_deactivation_hook(__FILE__, 'uninstall');

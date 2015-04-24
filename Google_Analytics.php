@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-require_once('vendor/google/apiclient/autoload.php');
+require_once(__DIR__ . '/vendor/google/apiclient/autoload.php');
 
 class Google_Analytics {
     private $accountName;

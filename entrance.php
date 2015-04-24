@@ -8,8 +8,13 @@
  * Author URI: http://me.coder.tw
  * License: MIT
  */
-include('vendor/autoload.php');
-include('Google_Analytics.php');
+
+
+session_start();
+
+include(__DIR__ . '/vendor/autoload.php');
+include(__DIR__ . '/Google_Analytics.php');
+include(__DIR__ . '/HotPostsWidget.php');
 
 function install() {
     global $wpdb;
@@ -35,15 +40,15 @@ function install() {
 function getData() {
     $applicationName = 'newcongress';
     $account = '433729975312-ar2hp401av11nsgadevcqk8fhuodn8uh@developer.gserviceaccount.com';
-    $key = plugin_dir_path(__FILE__) . 'newcongress-tw-be61ca6250aa.p12';
+    $key = __DIR__ . '/newcongress-tw-be61ca6250aa.p12';
 
     $analytics = new Google_Analytics($applicationName, $account, $key);
 
-    $analytics->setAccountId('逐風者')->setWebpropertieId('逐風者')->setProfileId();
+    $analytics->setAccountId('New Congress')->setWebpropertieId('New Congress')->setProfileId(1);
 
     $data = $analytics->getResults(
-                '2015-03-22', 
                 '2015-04-24', 
+                '2015-04-25', 
                 'ga:pageviews', [
                     'dimensions'=>'ga:pagePath,ga:date', 
                     'sort'=>'-ga:pageviews'
@@ -80,5 +85,3 @@ function uninstall() {
 register_activation_hook(__FILE__, 'install');
 register_activation_hook(__FILE__, 'install_data');
 register_deactivation_hook(__FILE__, 'uninstall');
-
-// SELECT `post_id`,sum(`count`) FROM `wp_statistics` group by `post_id` order by `count` desc limit 0,5

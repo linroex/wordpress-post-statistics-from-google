@@ -66,7 +66,11 @@ class Google_Analytics {
     }
 
     public function setProfileId($name = '') {
-        $this->profileId = $this->getProfileId($name);
+
+        $accountId = $this->getAccountId($name);
+        $webpropertyId = $this->getWebpropertieId($accountId, $name);
+        $this->profileId = $this->getProfileId($accountId, $webpropertyId);
+        
         return $this;
     }
 
@@ -86,9 +90,9 @@ $key = 'newcongress-tw-be61ca6250aa.p12';
 
 $analytics = new Google_Analytics($applicationName, $account, $key);
 
-$accountId = $analytics->getAccountId('New Congress');
-$webpropertyId = $analytics->getWebpropertieId($accountId, 'New Congress');
-$profileId = $analytics->getProfileId($accountId, $webpropertyId);
-// $analytics->setProfileId('逐風者');
-var_dump($profileId);
-// var_dump($analytics->getResults());
+// $accountId = $analytics->getAccountId('New Congress');
+// $webpropertyId = $analytics->getWebpropertieId($accountId, 'New Congress');
+// $profileId = $analytics->getProfileId($accountId, $webpropertyId);
+$analytics->setProfileId('逐風者');
+// var_dump($profileId);
+var_dump($analytics->getResults());
